@@ -1,0 +1,31 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+input CreateCustomerInput {
+  """Example field (placeholder)"""
+  exampleField: Int!
+}
+
+type Customer {
+  firstName: String!
+  id: String!
+  lastName: String!
+}
+
+type Mutation {
+  createCustomer(createCustomerInput: CreateCustomerInput!): Customer!
+  removeCustomer(id: Int!): Customer!
+  updateCustomer(updateCustomerInput: UpdateCustomerInput!): Customer!
+}
+
+type Query {
+  customer(id: String!): Customer
+  customers: [Customer!]!
+}
+
+input UpdateCustomerInput {
+  """Example field (placeholder)"""
+  exampleField: Int
+  id: Int!
+}

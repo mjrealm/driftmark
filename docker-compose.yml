@@ -1,0 +1,26 @@
+version: '3'
+
+services:
+  crdb:
+    image: cockroachdb/cockroach:v22.1.8
+    restart: unless-stopped
+    ports:
+      - 26257:26257
+      - 8080:8080
+    command: start-single-node --insecure --advertise-addr 'localhost'
+    volumes:
+      - cockroachdb:/cockroach/cockroach-data
+
+  # beaver:
+  #   image: dbeaver/cloudbeaver:latest
+  #   restart: unless-stopped
+  #   ports:
+  #     - 8978:8978
+  #   volumes:
+  #     - beaver:/opt/cloudbeaver/workspace
+  #   depends_on:
+  #     - crdb
+
+volumes:
+  cockroachdb:
+  beaver:
