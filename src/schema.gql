@@ -2,30 +2,570 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
+type Address {
+  country: String
+  street1: String
+  street2: String
+  zipCode: String
+}
+
+input AddressInput {
+  country: String
+  street1: String
+  street2: String
+  zipCode: String
+}
+
+type Company {
+  """Timestamp when this resource was created."""
+  _created: Timestamp!
+
+  """Timestamp when this resource was soft-deleted."""
+  _deleted: Timestamp
+
+  """Timestamp when this resource was updated."""
+  _updated: Timestamp!
+
+  """Version control for this resource."""
+  _version: Int!
+  address: Address!
+  email: String!
+  id: Int!
+  name: String!
+  phone: String!
+}
+
+input CreateCompanyInput {
+  address: AddressInput!
+  email: String!
+  name: String!
+  phone: String!
+}
+
 input CreateCustomerInput {
+  name: String!
+  phone: String!
+}
+
+input CreateLoanInput {
+  amount: Int!
+  customerId: String!
+  loanTypeId: Int!
+  name: String!
+  rate: Int!
+}
+
+input CreateLoanTypeInput {
+  days: [Int!]
+  description: String!
+  frequency: LoanPaymentFrequency!
+  name: String!
+}
+
+input CreateSettingInput {
   """Example field (placeholder)"""
   exampleField: Int!
 }
 
+input CreateXFieldInput {
+  default: String
+  name: String!
+  options: [String!]
+  orderIndex: Int!
+  required: Boolean!
+  scope: XFieldScope!
+  type: XFieldType!
+}
+
+input CreateXFieldsValueCustomerInput {
+  customerId: String!
+  value: String!
+  xFieldId: Int!
+}
+
+input CreateXFieldsValueLoanInput {
+  loanId: Int!
+  value: String!
+  xFieldId: Int!
+}
+
 type Customer {
-  firstName: String!
+  """Timestamp when this resource was created."""
+  _created: Timestamp!
+
+  """Timestamp when this resource was soft-deleted."""
+  _deleted: Timestamp
+
+  """Timestamp when this resource was updated."""
+  _updated: Timestamp!
+
+  """Version control for this resource."""
+  _version: Int!
+
+  """Full address of the Customer"""
+  address: Address!
+
+  """Primary email"""
+  email: String
   id: String!
-  lastName: String!
+
+  """All loans from this Customer"""
+  loans: [Loan!]!
+
+  """Name of the Customer"""
+  name: String!
+
+  """Additional notes for this Customer"""
+  notes: String
+
+  """Primary phone contact"""
+  phone: String!
+
+  """XField values for this Customer"""
+  xFieldValues: [XFieldsValueCustomer!]
+}
+
+input CustomerInput {
+  """Full address of the Customer"""
+  address: AddressInput!
+
+  """Primary email"""
+  email: String
+  id: String!
+
+  """All loans from this Customer"""
+  loans: [LoanInput!]!
+
+  """Name of the Customer"""
+  name: String!
+
+  """Additional notes for this Customer"""
+  notes: String
+
+  """Primary phone contact"""
+  phone: String!
+
+  """XField values for this Customer"""
+  xFieldValues: [XFieldsValueCustomerInput!]
+}
+
+type Loan {
+  """Timestamp when this resource was created."""
+  _created: Timestamp!
+
+  """Timestamp when this resource was soft-deleted."""
+  _deleted: Timestamp
+
+  """Timestamp when this resource was updated."""
+  _updated: Timestamp!
+
+  """Version control for this resource."""
+  _version: Int!
+
+  """Loan amount"""
+  amount: Int!
+
+  """Loan balance"""
+  balance: Int!
+
+  """Customer that owns this loan"""
+  customer: Customer
+
+  """Customer ID"""
+  customerId: String!
+  id: ID!
+
+  """Loan Type object"""
+  loanType: LoanType
+
+  """Loan type to use"""
+  loanTypeId: Int!
+
+  """Name of loan"""
+  name: String!
+
+  """Loan rate"""
+  rate: Int!
+
+  """Auto-generated loan reference ID"""
+  referenceId: String!
+
+  """XField values for this Customer"""
+  xFieldValues: [XFieldsValueLoan!]
+}
+
+input LoanInput {
+  """Loan amount"""
+  amount: Int!
+
+  """Loan balance"""
+  balance: Int!
+
+  """Customer that owns this loan"""
+  customer: CustomerInput
+
+  """Customer ID"""
+  customerId: String!
+  id: ID!
+
+  """Loan Type object"""
+  loanType: LoanTypeInput
+
+  """Loan type to use"""
+  loanTypeId: Int!
+
+  """Name of loan"""
+  name: String!
+
+  """Loan rate"""
+  rate: Int!
+
+  """Auto-generated loan reference ID"""
+  referenceId: String!
+
+  """XField values for this Customer"""
+  xFieldValues: [XFieldsValueLoanInput!]
+}
+
+enum LoanPaymentFrequency {
+  ANNUALLY
+  BI_MONTHLY
+  BI_WEEKLY
+  MONTHLY
+  SEMI_MONTHLY
+  WEEKLY
+}
+
+type LoanType {
+  """Timestamp when this resource was created."""
+  _created: Timestamp!
+
+  """Timestamp when this resource was soft-deleted."""
+  _deleted: Timestamp
+
+  """Timestamp when this resource was updated."""
+  _updated: Timestamp!
+
+  """Version control for this resource."""
+  _version: Int!
+
+  """
+  Only required for the ff:
+  Weekly - day of week
+  Semi-Monthly - days of month
+  """
+  days: [Int!]
+
+  """Set a description for this loan type"""
+  description: String
+  frequency: LoanPaymentFrequency!
+  id: ID!
+  name: String!
+}
+
+input LoanTypeInput {
+  """
+  Only required for the ff:
+  Weekly - day of week
+  Semi-Monthly - days of month
+  """
+  days: [Int!]
+
+  """Set a description for this loan type"""
+  description: String
+  frequency: LoanPaymentFrequency!
+  id: ID!
+  name: String!
 }
 
 type Mutation {
+  createCompany(createCompanyInput: CreateCompanyInput!): Company!
   createCustomer(createCustomerInput: CreateCustomerInput!): Customer!
-  removeCustomer(id: Int!): Customer!
+  createLoan(createLoanInput: CreateLoanInput!): Loan!
+  createLoanType(createLoanTypeInput: CreateLoanTypeInput!): LoanType!
+  createSetting(createSettingInput: CreateSettingInput!): Setting!
+  createXField(createXFieldInput: CreateXFieldInput!): XField!
+  createXFieldsValueCustomer(createXFieldsValueCustomerInput: CreateXFieldsValueCustomerInput!): XFieldsValue!
+  createXFieldsValueLoan(createXFieldsValueLoanInput: CreateXFieldsValueLoanInput!): XFieldsValue!
+  removeCompany(id: Int!): Company!
+  removeCustomer(id: String!): Customer!
+  removeLoan(id: Int!): Loan!
+  removeLoanType(id: Int!): LoanType!
+  removeSetting(id: Int!): Setting!
+  removeXField(id: Int!): XField!
+  removeXFieldsValue(id: Int!, scope: XFieldScope!): XFieldsValue!
+  updateCompany(updateCompanyInput: UpdateCompanyInput!): Company!
   updateCustomer(updateCustomerInput: UpdateCustomerInput!): Customer!
+  updateLoan(updateLoanInput: UpdateLoanInput!): Loan!
+  updateLoanType(updateLoanTypeInput: UpdateLoanTypeInput!): LoanType!
+  updateSetting(updateSettingInput: UpdateSettingInput!): Setting!
+  updateXField(updateXFieldInput: UpdateXFieldInput!): XField!
+  updateXFieldsValue(scope: XFieldScope!, updateXFieldsValueInput: UpdateXFieldsValueInput!): XFieldsValue!
 }
 
 type Query {
+  company(id: Int!): Company!
   customer(id: String!): Customer
   customers: [Customer!]!
+  loan(id: Int!): Loan!
+  loanType(id: Int!): LoanType!
+  loanTypes: [LoanType!]!
+  loans: [Loan!]!
+  setting(id: Int!): Setting!
+  settings: [Setting!]!
+  xField(id: Int!): XField!
+  xFields: [XField!]!
+  xFieldsByScope(scope: XFieldScope!): [XField!]!
+  xFieldsValue(id: Int!, scope: XFieldScope!): XFieldsValue!
+  xFieldsValues(scope: XFieldScope!): [XFieldsValue!]!
+}
+
+type Setting {
+  """Example field (placeholder)"""
+  exampleField: Int!
+}
+
+"""
+`Date` type as integer. Type represents date and time as number of milliseconds from start of UNIX epoch.
+"""
+scalar Timestamp
+
+input UpdateCompanyInput {
+  address: AddressInput
+  email: String
+  id: Int!
+  name: String
+  phone: String
 }
 
 input UpdateCustomerInput {
+  """Timestamp when this resource was created."""
+  _created: Timestamp
+
+  """Timestamp when this resource was soft-deleted."""
+  _deleted: Timestamp
+
+  """Timestamp when this resource was updated."""
+  _updated: Timestamp
+
+  """Version control for this resource."""
+  _version: Int
+
+  """Full address of the Customer"""
+  address: AddressInput
+
+  """Primary email"""
+  email: String
+  id: String
+
+  """All loans from this Customer"""
+  loans: [LoanInput!]
+
+  """Name of the Customer"""
+  name: String
+
+  """Additional notes for this Customer"""
+  notes: String
+
+  """Primary phone contact"""
+  phone: String
+
+  """XField values for this Customer"""
+  xFieldValues: [XFieldsValueCustomerInput!]
+}
+
+input UpdateLoanInput {
+  amount: Int
+  customerId: String
+  id: Int!
+  loanTypeId: Int
+  name: String
+  rate: Int
+}
+
+input UpdateLoanTypeInput {
+  days: [Int!]
+  description: String
+  frequency: LoanPaymentFrequency
+  id: ID!
+  name: String
+}
+
+input UpdateSettingInput {
   """Example field (placeholder)"""
   exampleField: Int
   id: Int!
+}
+
+input UpdateXFieldInput {
+  default: String
+  id: Int!
+  name: String
+  options: [String!]
+  orderIndex: Int
+  required: Boolean
+}
+
+input UpdateXFieldsValueInput {
+  id: ID!
+  value: String!
+}
+
+type XField {
+  """Timestamp when this resource was created."""
+  _created: Timestamp!
+
+  """Timestamp when this resource was soft-deleted."""
+  _deleted: Timestamp
+
+  """Timestamp when this resource was updated."""
+  _updated: Timestamp!
+
+  """Version control for this resource."""
+  _version: Int!
+
+  """Default value for this xField. Applies only to select xFields."""
+  default: String
+  id: ID!
+
+  """Name of the custom field"""
+  name: String!
+
+  """For some XFieldType like dropdown, options can be added."""
+  options: [String!]
+
+  """The order in which this xField will appear. Defaults to 1."""
+  orderIndex: Int!
+
+  """Wether this xField is required to have a value."""
+  required: Boolean!
+
+  """Fixed list of scopes"""
+  scope: XFieldScope!
+
+  """Fixed list of types"""
+  type: XFieldType!
+}
+
+input XFieldInput {
+  """Default value for this xField. Applies only to select xFields."""
+  default: String
+  id: ID!
+
+  """Name of the custom field"""
+  name: String!
+
+  """For some XFieldType like dropdown, options can be added."""
+  options: [String!]
+
+  """The order in which this xField will appear. Defaults to 1."""
+  orderIndex: Int!
+
+  """Wether this xField is required to have a value."""
+  required: Boolean!
+
+  """Fixed list of scopes"""
+  scope: XFieldScope!
+
+  """Fixed list of types"""
+  type: XFieldType!
+}
+
+enum XFieldScope {
+  CUSTOMER
+  LOAN
+  PAYMENT
+}
+
+enum XFieldType {
+  CHECKBOX
+  DATE
+  DROPDOWN
+  EMAIL
+  MONEY
+  NUMBER
+  PHONE
+  RATING
+  TEXT
+  TEXTAREA
+}
+
+type XFieldsValue {
+  """Timestamp when this resource was created."""
+  _created: Timestamp!
+
+  """Timestamp when this resource was soft-deleted."""
+  _deleted: Timestamp
+
+  """Timestamp when this resource was updated."""
+  _updated: Timestamp!
+
+  """Version control for this resource."""
+  _version: Int!
+  id: ID!
+
+  """Actual value of xField"""
+  value: String!
+  xField: XField!
+
+  """The xField ID foreign key"""
+  xFieldId: Int!
+}
+
+type XFieldsValueCustomer {
+  """Timestamp when this resource was created."""
+  _created: Timestamp!
+
+  """Timestamp when this resource was soft-deleted."""
+  _deleted: Timestamp
+
+  """Timestamp when this resource was updated."""
+  _updated: Timestamp!
+
+  """Version control for this resource."""
+  _version: Int!
+  customer: Customer!
+  customerId: String
+  id: ID!
+
+  """Actual value of xField"""
+  value: String!
+  xField: XField!
+
+  """The xField ID foreign key"""
+  xFieldId: Int!
+}
+
+input XFieldsValueCustomerInput {
+  customer: CustomerInput!
+  customerId: String
+}
+
+type XFieldsValueLoan {
+  """Timestamp when this resource was created."""
+  _created: Timestamp!
+
+  """Timestamp when this resource was soft-deleted."""
+  _deleted: Timestamp
+
+  """Timestamp when this resource was updated."""
+  _updated: Timestamp!
+
+  """Version control for this resource."""
+  _version: Int!
+  id: ID!
+  loan: Loan!
+  loanId: Int!
+
+  """Actual value of xField"""
+  value: String!
+  xField: XField!
+
+  """The xField ID foreign key"""
+  xFieldId: Int!
+}
+
+input XFieldsValueLoanInput {
+  loan: LoanInput!
+  loanId: Int!
 }
