@@ -50,9 +50,11 @@ input CreateCustomerInput {
 input CreateLoanInput {
   amount: Int!
   customerId: String!
+  fixedDurationInMos: Int
   loanTypeId: Int!
   name: String!
   rate: Int!
+  startDate: Timestamp!
 }
 
 input CreateLoanTypeInput {
@@ -63,8 +65,8 @@ input CreateLoanTypeInput {
 }
 
 input CreateSettingInput {
-  """Example field (placeholder)"""
-  exampleField: Int!
+  currency: String!
+  loanFormula: String!
 }
 
 input CreateXFieldInput {
@@ -173,6 +175,9 @@ type Loan {
 
   """Customer ID"""
   customerId: String!
+
+  """Fixed duration in number of months"""
+  fixedDurationInMos: Int
   id: ID!
 
   """Loan Type object"""
@@ -190,6 +195,9 @@ type Loan {
   """Auto-generated loan reference ID"""
   referenceId: String!
 
+  """Loan start date"""
+  startDate: Timestamp!
+
   """XField values for this Customer"""
   xFieldValues: [XFieldsValueLoan!]
 }
@@ -206,6 +214,9 @@ input LoanInput {
 
   """Customer ID"""
   customerId: String!
+
+  """Fixed duration in number of months"""
+  fixedDurationInMos: Int
   id: ID!
 
   """Loan Type object"""
@@ -222,6 +233,9 @@ input LoanInput {
 
   """Auto-generated loan reference ID"""
   referenceId: String!
+
+  """Loan start date"""
+  startDate: Timestamp!
 
   """XField values for this Customer"""
   xFieldValues: [XFieldsValueLoanInput!]
@@ -321,8 +335,22 @@ type Query {
 }
 
 type Setting {
-  """Example field (placeholder)"""
-  exampleField: Int!
+  """Currency to use. Set only once."""
+  currency: String!
+  id: ID!
+
+  """
+  Formula to use when computing total loan.
+  
+  Per payment is computed with frequency.
+  
+  LOAN, RATE, DURATION
+  
+  e.g.
+  ((LOAN * (RATE/100)) * DURATION) + LOAN
+  ((50000 * (5/100)) * 10) + 50000 = 75000
+  """
+  loanFormula: String!
 }
 
 """
@@ -377,10 +405,12 @@ input UpdateCustomerInput {
 input UpdateLoanInput {
   amount: Int
   customerId: String
+  fixedDurationInMos: Int
   id: Int!
   loanTypeId: Int
   name: String
   rate: Int
+  startDate: Timestamp
 }
 
 input UpdateLoanTypeInput {
@@ -392,9 +422,9 @@ input UpdateLoanTypeInput {
 }
 
 input UpdateSettingInput {
-  """Example field (placeholder)"""
-  exampleField: Int
-  id: Int!
+  currency: String
+  id: ID!
+  loanFormula: String
 }
 
 input UpdateXFieldInput {

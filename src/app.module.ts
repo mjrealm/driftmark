@@ -11,7 +11,6 @@ import { CustomersModule } from './customers/customers.module';
 import { LoansModule } from './loans/loans.module';
 import { XFieldsValuesModule } from './x-fields-values/x-fields-values.module';
 import { XFieldsModule } from './x-fields/x-fields.module';
-import { SettingsModule } from './settings/settings.module';
 
 @Module({
   imports: [
@@ -41,7 +40,6 @@ import { SettingsModule } from './settings/settings.module';
     LoansModule,
     XFieldsModule,
     XFieldsValuesModule,
-    SettingsModule,
   ],
   controllers: [AppController],
   providers: [AppService],

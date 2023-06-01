@@ -85,6 +85,18 @@ export class Loan extends Versioned {
   xFieldValues?: XFieldsValueLoan[];
 
   /**
+   * Loan start date
+   */
+  @Column(() => Date)
+  startDate: Date;
+
+  /**
+   * Fixed duration in number of months
+   */
+  @Column({ nullable: true })
+  fixedDurationInMos?: number;
+
+  /**
    * Generate a custom reference number
    */
   @BeforeInsert()

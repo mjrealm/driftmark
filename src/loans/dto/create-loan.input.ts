@@ -11,4 +11,8 @@ export class CreateLoanInput {
   rate: number;
 
   loanTypeId: number;
+
+  startDate: Date;
+
+  fixedDurationInMos?: number;
 }
